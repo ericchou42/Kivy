@@ -38,3 +38,12 @@ https://www2.nkust.edu.tw/~shanhuen/PythonTutorialHtml/Kivy.html
 
 ## Zebra 控制規則
 https://support.zebra.com/cpws/docs/zpl/zpl_Exercises.pdf
+
+
+# commit 規範
+```
+Message Header: <type>(<scope>): <subject>
+```
+*   type（必要）：commit 的類別，如：feat(建立), fix(修改), docs, style, refactor, test, chore
+*   scope（可選）：commit 影響的範圍，如：資料庫、控制層、模板層等，視專案不同改變
+*   subject（必要）：commit 的簡短描述，不超過 50 個字元，結尾不加句號
