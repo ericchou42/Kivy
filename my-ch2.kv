@@ -1,0 +1,26 @@
+<MyLayout>
+    name: name
+    age: age
+
+    GridLayout:
+        cols: 1
+        size: root.width, root.height
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Name:"
+            TextInput:
+                id: name
+                hint_text: "input your name......"
+                multiline: False
+                on_focus: root.inputName()
+            Label:
+                text: "Age:"
+            TextInput:
+                id: age
+                hint_text: "input your age......"
+                multiline: False
+                on_focus: root.inputAge()
+        Button:
+            text: "Click"
+            on_press: root.clickBtn()
