@@ -9,6 +9,7 @@ pip show pip
 
 # 建立虛擬環境
 python3.12 -m venv .venv
+
 # (Windows)
 py -m venv .venv
 
@@ -34,7 +35,10 @@ pip install kivy
 https://www.youtube.com/watch?v=3x9jx29hA68
 https://www2.nkust.edu.tw/~shanhuen/PythonTutorialHtml/Kivy.html
 
+# 打包方式
+pip install pyinstaller
 
+pyinstaller -F your_script.py
 
 ## Zebra 控制規則
 https://support.zebra.com/cpws/docs/zpl/zpl_Exercises.pdf

@@ -25,6 +25,10 @@ class DatabaseConnectionApp(App):
         self.order_number_input = TextInput(hint_text='請輸入工單號', size_hint_y=5, height=40, multiline=False, font_name="NotoSansTC",font_size=50)
         layout.add_widget(self.order_number_input)
 
+        # 工單號輸入框，提示文字為"請輸入工單號"
+        self.order_number_input = TextInput(hint_text='請輸入內容', size_hint_y=5, height=40, multiline=False, font_name="NotoSansTC",font_size=50)
+        layout.add_widget(self.order_number_input)
+
         # 查詢按鈕，綁定查詢事件
         self.query_button = Button(text="查詢", size_hint_y=5, height=40, font_name="NotoSansTC",font_size=50)
         self.query_button.bind(on_press=self.query_record)
