@@ -6,8 +6,20 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.core.text import LabelBase  # 匯入 LabelBase 用於字型註冊
 
+import sys
+import os
+
+
+# 判斷程式是否在打包後的 .exe 中運行(與打包後能否順利執行有關)
+if getattr(sys, 'frozen', False):
+    # 取得字型檔案在臨時資料夾中的路徑
+    font_path = os.path.join(sys._MEIPASS, 'NotoSansTC-Regular.ttf')
+else:
+    # 開發模式下直接使用源碼目錄中的字型檔案
+    font_path = os.path.join(os.path.dirname(__file__), 'NotoSansTC-Regular.ttf')
+
 # 註冊繁體中文字型
-LabelBase.register(name="NotoSansTC", fn_regular="NotoSansTC-Regular.ttf")
+LabelBase.register(name="NotoSansTC", fn_regular=font_path)
 
 class DatabaseConnectionApp(App):
     def __init__(self, **kwargs):
@@ -42,25 +54,26 @@ class DatabaseConnectionApp(App):
         self.connect_to_database()
 
         return layout
-
+    
     def connect_to_database(self):
-        """ 連接到 MySQL 資料庫 """
         try:
-            # 使用 MySQL Connector 進行連接
             self.connection = mysql.connector.connect(
-                host="localhost",  # MySQL 伺服器主機
-                user="root",       # 使用者名稱
-                password="",       # 密碼
-                database="my_database",  # 資料庫名稱
-                port=3306          # 端口號
+                host="localhost",
+                user="root",
+                password="",
+                database="my_database",
+                port=3306
             )
-            # 使用 dictionary=True 將結果以字典格式返回
             self.cursor = self.connection.cursor(dictionary=True)
             print("成功連接到資料庫")
         except mysql.connector.Error as err:
             print(f"資料庫連接錯誤: {err}")
+            self.result_label.text = "無法連接資料庫，請檢查設定！"
 
     def query_record(self, instance):
+        if not self.cursor:
+            self.result_label.text = "資料庫連接失敗，無法查詢。"
+            return
         """ 查詢工單號並顯示資料 """
         # 取得工單號輸入值並去除空格
         self.order_number = self.order_number_input.text.strip()
