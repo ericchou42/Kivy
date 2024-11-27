@@ -38,7 +38,10 @@ https://www2.nkust.edu.tw/~shanhuen/PythonTutorialHtml/Kivy.html
 # 打包方式
 pip install pyinstaller
 
-pyinstaller -F your_script.py
+-F [全部打包]
+--onefile[單一執行檔]
+--icon=your_icon.ico[執行檔圖示]
+--name=your_app_name[執行檔名稱]
 
 ## Zebra 控制規則
 https://support.zebra.com/cpws/docs/zpl/zpl_Exercises.pdf
