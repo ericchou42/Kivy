@@ -8,6 +8,8 @@ from kivy.core.text import LabelBase
 import serial  # 新增串口模組
 import sys
 import os
+from kivy.uix.spinner import Spinner  # 新增 Spinner 引入
+import serial.tools.list_ports  # 新增串口列表工具
 
 # 判斷程式是否在打包後的 .exe 中運行
 if getattr(sys, 'frozen', False):
@@ -27,18 +29,37 @@ class DatabaseConnectionApp(App):
         self.order_number = None
         
         # 初始化串口連線相關的變數
-        self.serial_port = 'COM4'
+        self.serial_port = None  # 修改為 None，等待用戶選擇
         self.baudrate = 9600
         self.timeout = 1
         self.ser = None
+        self.available_ports = []  # 新增可用串口列表
     
+    def get_available_ports(self):
+        """獲取所有可用的串口列表"""
+        ports = [port.device for port in serial.tools.list_ports.comports()]
+        return ports if ports else ['無可用串口']
+
     def build(self):
         layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+
+        # 新增串口選擇下拉選單
+        self.available_ports = self.get_available_ports()
+        self.port_spinner = Spinner(
+            text='選擇串口',
+            values=self.available_ports,
+            size_hint_y=5,
+            height=40,
+            font_name="NotoSansTC",
+            font_size=50
+        )
+        self.port_spinner.bind(text=self.on_port_select)
+        layout.add_widget(self.port_spinner)
 
         # 工單號輸入框
         self.order_number_input = TextInput(
             hint_text='請輸入工單號', 
-            size_hint_y=5, 
+            size_hint_y=7, 
             height=40, 
             multiline=False, 
             font_name="NotoSansTC",
@@ -77,7 +98,7 @@ class DatabaseConnectionApp(App):
         )
         layout.add_widget(self.weight_label)
 
-        # 按鈕區域
+        # 按鈕��域
         self.button_box = BoxLayout(size_hint_y=20, height=60, spacing=20)
         layout.add_widget(self.button_box)
 
@@ -85,7 +106,7 @@ class DatabaseConnectionApp(App):
         self.connect_to_database()
         
         # 連接串口
-        self.connect_to_serial()
+        # self.connect_to_serial()  # 移除這行，等待用戶選擇串口後再連接
 
         return layout
     
@@ -198,6 +219,12 @@ class DatabaseConnectionApp(App):
         if self.ser and self.ser.is_open:
             self.ser.close()
             print(f"串口 {self.serial_port} 已關閉")
+
+    def on_port_select(self, spinner, text):
+        """當用戶選擇串口時觸發"""
+        if text != '無可用串口':
+            self.serial_port = text
+            self.connect_to_serial()
 
 if __name__ == '__main__':
     DatabaseConnectionApp().run()
