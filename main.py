@@ -65,6 +65,7 @@ class DatabaseConnectionApp(App):
             font_name="NotoSansTC",
             font_size=50
         )
+        self.order_number_input.bind(on_text_validate=self.query_record)
         layout.add_widget(self.order_number_input)
 
         # 查詢按鈕
@@ -98,7 +99,7 @@ class DatabaseConnectionApp(App):
         )
         layout.add_widget(self.weight_label)
 
-        # 按鈕��域
+        # 按鈕區域
         self.button_box = BoxLayout(size_hint_y=20, height=60, spacing=20)
         layout.add_widget(self.button_box)
 
@@ -221,7 +222,7 @@ class DatabaseConnectionApp(App):
             print(f"串口 {self.serial_port} 已關閉")
 
     def on_port_select(self, spinner, text):
-        """當用戶選擇串口時觸發"""
+        """當用戶選擇串口時觸��"""
         if text != '無可用串口':
             self.serial_port = text
             self.connect_to_serial()
